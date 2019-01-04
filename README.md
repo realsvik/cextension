@@ -53,10 +53,15 @@ Double check, that:
 
 To test it in Python, run the Python, where you installed the extension to and type:
 import numpy as np
+
 ll = np.array([1,2,3,1,2,2,1,3], dtype = float)
+
 l1 = np.array([1,2,3,1,2,2,1,318.7], dtype = float)
+
 from pass_array import take_and_return
+
 aa = np.linspace(1., 4., 6)
+
 tt = take_and_return((ll,l1,aa,8,8,6))
 
 You should receive a lot of printed output, not zeroes.
