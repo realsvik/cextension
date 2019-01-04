@@ -18,7 +18,8 @@ To build a C extension, following has to be done:
 5. Extension installed to Python
 
 A detailed intro to Python extensions in VS is available here: https://docs.microsoft.com/en-us/visualstudio/python/working-with-c-cpp-python-in-visual-studio?view=vs-2017
-Though it explainsw to wrap C code and mport it to Python, it does not cover how to pass and return arrays.
+Though it shows how to wrap C code and import it to Python, it does not cover how to pass and return arrays.
+
 Also, it does not cover all the path pecularities, which may occur on a real machine.
 
 ### 1. Install Visual Studio
