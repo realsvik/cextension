@@ -30,12 +30,16 @@ Also, it does not cover all the path pecularities, which may occur on a real mac
 Follow the steps in https://docs.microsoft.com/en-us/visualstudio/python/working-with-c-cpp-python-in-visual-studio?view=vs-2017 to make sure, that installation worked.
 This article gives a good overview on how to present C code to python.
 I did not use PyBind11.
+
 For paths, use paths to 32 bit Python installation, provided by Visual Studio, such as C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_86\include,  NOT your other Python installation folders. You may experiment with other paths too of course.
-When you start dealing with arrays, you will have to add Numpy to this Python installation to include its headers, and stop using Py_LIMITED_API; more on this later
+When you start dealing with arrays, you will have to add Numpy to this Python installation to include its headers, and stop using Py_LIMITED_API; more on this later.
+
 To install your extension to Python, navigate to the folder, where you .pyd file resides and run:
-Folder example: C:\Users\username\source\repos\Project4\Project4
-pip install .
+*Folder example: C:\Users\username\source\repos\Project4\Project4
+pip install .*
+
 This will install your extension to the python, which is found on your PATH.
+
 If you need to install the extension to Anaconda python to use in Juputer, or any other Python you have, use its own pip, such as provide full path to the pip you intend to use.
 
 ### 3. Make Numpy available to Visual Studio
@@ -54,15 +58,15 @@ Double check, that:
 To test it in Python, run the Python, where you installed the extension to and type:
 import numpy as np
 
-ll = np.array([1,2,3,1,2,2,1,3], dtype = float)
+*ll = np.array([1,2,3,1,2,2,1,3], dtype = float)*
 
-l1 = np.array([1,2,3,1,2,2,1,318.7], dtype = float)
+*l1 = np.array([1,2,3,1,2,2,1,318.7], dtype = float)
 
-from pass_array import take_and_return
+*from pass_array import take_and_return
 
-aa = np.linspace(1., 4., 6)
+*aa = np.linspace(1., 4., 6)
 
-tt = take_and_return((ll,l1,aa,8,8,6))
+*tt = take_and_return((ll,l1,aa,8,8,6))*
 
 You should receive a lot of printed output, not zeroes.
 When passing Numpy arrays, mind dtypes. Wrong dtype and C returns all zeroes.
