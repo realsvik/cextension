@@ -5,34 +5,6 @@
 #include "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_86\Lib\site-packages\numpy\core\include\numpy\ndarraytypes.h"
 #include "C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_86\Lib\site-packages\numpy\core\include\numpy\arrayobject.h"
 
-double** build_values(double st1[], int len1,
-	double st2[], int len2,
-	double st3[], int len3) {
-	const int array_len = len1 * len2 * len3;
-	double **res_array;
-	res_array = (double **)malloc(array_len * sizeof(double *));  // allocate 100 doubles
-	for (int i = 0; i < array_len; i++) {
-		res_array[i] = (double *)malloc(sizeof(*res_array[i]) * 3);
-		//printf("%f\n", res_array[i]);
-	};
-	int row_counter = 0;
-	//int col_counter = 0
-	for (int i = 0; i < len1; i++) {
-		for (int j = 0; j < len3; j++) {
-			for (int k = 0; k < len3; k++) {
-				res_array[row_counter][0] = st1[i];
-				res_array[row_counter][1] = st2[j];
-				res_array[row_counter][2] = st3[k];
-				printf("%f\n", res_array[row_counter][0]);
-				row_counter++;
-			};
-
-		};
-	};
-	
-	return res_array;
-};
-
 
 
 double *pyvector_to_Carrayptrs(PyArrayObject *arrayin) {
@@ -42,9 +14,7 @@ double *pyvector_to_Carrayptrs(PyArrayObject *arrayin) {
 	return (double *)arrayin->data;  /* pointer to arrayin data as double */
 };
 
-/*void free_Carrayptrs(double **v) {
-	free((char*)v);
-};*/
+
 
 void free_Cint2Darrayptrs(int **v) {
 	free((char*)v);
@@ -73,15 +43,6 @@ double **pymatrix_to_Carrayptrs(PyArrayObject *arrayin) {
 	return c;
 }
 
-/*double **carray_from_2dims(int n1, int n2, double * a) {
-	double **c;
-	int i;
-	c = ptrvector(n1);
-	for (i = 0; i < n1; i++) {
-		c[i] = a + i * n2;
-	}
-	return c;
-}*/
 
 void print_array(double *arr, int len) {
 	for (int i = 0; i < len; i++) {
@@ -90,23 +51,27 @@ void print_array(double *arr, int len) {
 }
 PyObject *take_and_return(PyObject *self, PyObject *args)
 {
+	// pointers to Python objects to use in the function
 	PyArrayObject *array1;
 	PyArrayObject *array2;
 	PyArrayObject *array3;
+	// pointers to data in received Python objects
 	double *c1in;
 	double *c2in;
 	double *c3in;
 	double **cout;
+	// object to store calculation result and pass back to Numpy
 	PyArrayObject *matout;
-	double **cin;
+	// variables to store array dimension, technical checks
 	int n1,n2,n3;
 	int l1;
 	int l2;
 	int l3;
+	// variable to keep multiplication result
 	int value;
 	double **res_array;
-	PyArrayObject *alpha;
 	printf("entered function\n");
+	// Parse received Python arguments into 3 Python objects and 3 integer lengths
 	if (!PyArg_ParseTuple(args, "O!O!O!iii", 
 		&PyArray_Type, &array1, 
 		&PyArray_Type, &array2,
@@ -117,33 +82,38 @@ PyObject *take_and_return(PyObject *self, PyObject *args)
 	}
 	else
 		printf("got argument\n");
+	
+	//setup ppointer to vector data and print techincal checks for array 1
 	n1 = array1->nd;
 	printf("array1 num dim %d\n", n1);
 	printf("array1 len %d\n", l1);
 	c1in = pyvector_to_Carrayptrs(array1);
 	print_array(c1in, l1);
-	printf("arra1 1st elem %f\n", array1->data);
 	
+	//setup ppointer to vector data and print techincal checks for array 2. Yes, this should be a function
 	n2 = array2->nd;
 	printf("array2 num dim %d\n", n2);
 	printf("array2 len %d\n", l2);
 	c2in = pyvector_to_Carrayptrs(array2);
-	n3 = array3->nd;
 	print_array(c2in, l2);
+	//setup ppointer to vector data and print techincal checks for array 3. Yes, this should be a function
+	n3 = array3->nd;
 	printf("array3 num dim %d\n", n3);
 	printf("array3 len %d\n", l3);
 	c3in = pyvector_to_Carrayptrs(array3);
 	print_array(c3in, l3);
-
+	// number of rows in result array
 	value = l1 * l2 * l3;
 	printf("value %d\n", value);
 	int nd = 2;
 	int dims[] = {value,3 };
 	printf("dim 1 %d\n", dims[0]);
 	printf("dim 2 %d\n", dims[1]);
+	// create object to return to Numpy
 	matout = (PyArrayObject *)PyArray_FromDims(2, dims, NPY_DOUBLE); //memory allocated for new object
+	// create pointer to data in resulting Python object
 	cout = pymatrix_to_Carrayptrs(matout);
-	// here do something with the new array. Here it is filled with the values of passed vectors
+	// here do something with the new array. A the moment it is filled with the values of passed vectors
 	int row_counter = 0;
 
 	for (int i = 0; i < l1; i++) {
