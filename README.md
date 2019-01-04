@@ -1,7 +1,7 @@
 ## c extension
 Code to pass numpy vectors from Python to C, generate a grid of values from the and return grid as Numpy matrix
 Heavily based on https://scipy-cookbook.readthedocs.io/items/C_Extensions_NumPy_arrays.html
-Explanation here was super helpful http://folk.uio.no/inf3330/scripting/doc/python/NumPy/Numeric/numpy-13.html
+This explanation on represenation of Python objects in C was super helpful : http://folk.uio.no/inf3330/scripting/doc/python/NumPy/Numeric/numpy-13.html
 
 This code can be extended to do something more meaningful as C extension.
 
@@ -71,7 +71,33 @@ import numpy as np
 You should receive a lot of printed output, not zeroes.
 When passing Numpy arrays, mind dtypes. Wrong dtype and C returns all zeroes.
 
+### 5. Code walkthough
+"PyObject *take_and_return(PyObject *self, PyObject *args) "
 
+Accepts arguments from Python. Ih this case, 3 numpy 1d arrays of Python type float and 3 corresponding integer array lenghts.
+It is much easier to pass array length to C, than to calculate it in place.
 
+PyArg_ParseTuple(args, "O!O!O!iii", 
+		&PyArray_Type, &array1, 
+		&PyArray_Type, &array2,
+		&PyArray_Type, &array3,
+		&l1, &l2, &l3))
+
+Parses arguments and stores them in variables. Variables are declared as pointers, but value is saved in them as value. 
+In the format string, O! means Python object, i means integer.
+
+n1 = array1->nd;
+printf("array1 num dim %d\n", n1);
+printf("array1 len %d\n", l1);
+c1in = pyvector_to_Carrayptrs(array1);
+print_array(c1in, l1);
+
+Above lines prints details about arrays received, such as number of dimensions, length and values. If values printed are wrong, then check dtype of original numpy array.
+
+matout = (PyArrayObject *)PyArray_FromDims(2, dims, NPY_DOUBLE); //memory allocated for new object!
+cout = pymatrix_to_Carrayptrs(matout);
+
+Above lines create Python object, which will contain the result values and create create a C pointer to data in Python object.
+When cout is modified, matout is modified as well.
 
 
