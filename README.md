@@ -1,5 +1,5 @@
 ## c extension
-Code to pass numpy vectors from Python to C, generate a grid of values from the and return grid as Numpy matrix
+Code to pass numpy vectors from Python to C, generate a grid of values from them and return grid as Numpy matrix
 
 Heavily based on https://scipy-cookbook.readthedocs.io/items/C_Extensions_NumPy_arrays.html
 
@@ -13,9 +13,9 @@ Machine has pure Python, Anaconda and VS Python  installed at the same time.
 To build a C extension, following has to be done:
 1. Visual Studio installed (it is possible to compile extensions with distutils too, but here Visual Suudio is used )
 2. Extension written
-3. Extension wrapped in functions an structure to make it available for Python imports
+3. Extension wrapped in functions and a structure to make it available for Python imports
 4. Extension built
-5. Extension installed to Python
+5. Extension installed into Python
 
 A detailed intro to Python extensions in VS is available here: https://docs.microsoft.com/en-us/visualstudio/python/working-with-c-cpp-python-in-visual-studio?view=vs-2017
 Though it shows how to wrap C code and import it to Python, it does not cover how to pass and return arrays.
