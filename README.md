@@ -1,6 +1,8 @@
 ## c extension
 Code to pass numpy vectors from Python to C, generate a grid of values from the and return grid as Numpy matrix
+
 Heavily based on https://scipy-cookbook.readthedocs.io/items/C_Extensions_NumPy_arrays.html
+
 This explanation on represenation of Python objects in C was super helpful : http://folk.uio.no/inf3330/scripting/doc/python/NumPy/Numeric/numpy-13.html
 
 This code can be extended to do something more meaningful as C extension.
